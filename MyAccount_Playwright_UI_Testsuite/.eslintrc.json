@@ -1,0 +1,72 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "playwright"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:playwright/recommended",
+    "prettier"
+  ],
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-floating-promises": "error",
+    "no-console": "off",
+    "no-debugger": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": ["error", "always"],
+    "playwright/no-skipped-test": "warn",
+    "playwright/no-focused-test": "error",
+    "playwright/valid-expect": "error",
+    "playwright/prefer-web-first-assertions": "warn",
+    "playwright/no-wait-for-timeout": "warn",
+    "playwright/no-element-handle": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.ts", "*.test.ts"],
+      "rules": {
+        "@typescript-eslint/no-floating-promises": "off",
+        "playwright/no-conditional-in-test": "off",
+        "playwright/no-skipped-test": "off",
+        "playwright/expect-expect": "off"
+      }
+    },
+    {
+      "files": ["tests/pages/**/*.ts"],
+      "rules": {
+        "playwright/no-wait-for-timeout": "off",
+        "playwright/no-force-option": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "allure-results",
+    "allure-report",
+    "playwright-report",
+    "test-results",
+    "reports"
+  ]
+}

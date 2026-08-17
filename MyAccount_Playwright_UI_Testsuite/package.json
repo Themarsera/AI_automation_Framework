@@ -1,0 +1,53 @@
+{
+  "name": "myaccount-playwright-ui-testsuite",
+  "version": "1.0.0",
+  "description": "MyAccount UI Playwright automation — Auth0 login, service requests, appointments, payments.",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "npx playwright test",
+    "test:qa": "cross-env TARGET_ENV=qa DATA_SOURCE=mongo npx playwright test --project=chromium",
+    "test:preprod": "cross-env TARGET_ENV=preprod DATA_SOURCE=mongo npx playwright test --project=chromium",
+    "test:prod": "cross-env TARGET_ENV=prod DATA_SOURCE=mongo npx playwright test --project=chromium",
+    "test:headed": "cross-env PW_HEADED=1 npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke --project=chromium",
+    "test:regression": "npx playwright test --grep @regression --grep-invert @integration --project=chromium",
+    "test:e2e": "npx playwright test --grep @e2e --project=chromium",
+    "report": "npx playwright show-report reports/playwright-report",
+    "allure:prepare": "node scripts/prepare-allure-metadata.mjs",
+    "allure:generate": "npm run allure:prepare && npx allure generate allure-results --clean -o reports/allure-report",
+    "allure:open": "npx allure open reports/allure-report",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "validate": "npm run typecheck && npm run lint && npm run format:check",
+    "mongo:patch": "node scripts/mongo/patch-mongo-missing-fields.js",
+    "mongo:seed": "node scripts/mongo/seed-missing-uat-docs.js"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "dotenv": "^16.6.1",
+    "mongodb": "^4.1.0",
+    "pino": "^9.14.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.20.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "allure-commandline": "^2.43.0",
+    "allure-playwright": "^3.10.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-playwright": "^1.8.3",
+    "prettier": "^3.9.5",
+    "typescript": "^5.9.3"
+  }
+}
