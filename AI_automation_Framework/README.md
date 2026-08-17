@@ -1,418 +1,378 @@
-# Playwright MyAccount UI Test Suite
+# AI Automation Framework
 
-## Overview
+A comprehensive **Playwright + TypeScript** automation testing framework for the **MyAccount** web application. Enterprise-grade with AI-assisted test authoring, rich reporting, and production-ready CI/CD integration.
 
-This repository hosts the Playwright MyAccount UI Test suite for the **Cinch Home Services — MyAccount** web application. It is a Playwright + TypeScript framework designed for:
+## ✨ Features
 
-- **Maintainability** – Page Object Model with TypeScript
-- **Scalability** – Modular structure, reusable page components
-- **CI/CD compatibility** – Headless execution, environment-based config, HTML + Allure reports
-- **AI-assisted authoring** – Integrated Playwright MCP agents for planning, generating, and healing tests
+### 🧠 AI-Powered Test Lifecycle
+- **Test Planner Agent** – Explores live app flows and generates structured test plans
+- **Test Generator Agent** – Creates test specs from plans (POM-compliant)
+- **Test Healer Agent** – Debugs and fixes failing tests automatically
+- Integrated MCP agents for rapid, reliable test authoring
 
-## Features
+### 🏗️ Enterprise Architecture
+- **Page Object Model (POM)** – Clean, maintainable, reusable page classes
+- **Modular Components** – Composable test utilities and data providers
+- **Environment Management** – QA, PreProd, Prod configurations
+- **Parallel Execution** – Run 100s of tests in minutes
+- **Data Providers** – MongoDB integration for dynamic test data
 
-- UI automation for the MyAccount portal (Auth0 login, React SPA, service request flows)
-- Modular and reusable test framework with Page Objects
-- Environment-based configuration (QA)
-- Support for headless and headed execution
-- CI/CD friendly execution
-- Rich test reporting (Playwright HTML report, Allure)
-- Credential management via environment variables or local JSON file
-- TestRail integration via MCP for test case mapping and result reporting
-- AI agent workflow (Planner → Generator → Healer) for rapid test authoring
+### 📊 Rich Reporting & Observability
+- **Playwright HTML Reports** – Interactive test results with video/traces
+- **Allure Reports** – Custom failure categories, metadata, trends
+- **TestRail Integration** – Automatic test case tracking via MCP
+- **Auto-Capture** – Screenshots, videos, traces on failure
 
----
-
-## Tech Stack
-
-| Category | Technology |
-|---|---|
-| Language | TypeScript |
-| Automation | Playwright |
-| Test Framework | @playwright/test |
-| Build / Run | npm |
-| Reporting | Playwright HTML / Allure |
-| TestRail Integration | MCP TestRail plugin |
-| AI Test Authoring | Claude Code (Playwright MCP agents) |
+### 🔐 Security & Maintainability
+- **Credential Management** – Environment variables or `test-credentials.json`
+- **TypeScript** – Type-safe automation code
+- **Linting & Formatting** – ESLint + Prettier enforced
+- **Cloud-Ready** – GitHub Actions CI/CD support
 
 ---
 
-## Repository Structure
+## 🚀 Quick Start
 
-```
-MyAccount_Playwright_UI_Testsuite/
-├── tests/
-│   ├── pages/                              # Page Object Model classes
-│   │   ├── BasePage.ts                     # Shared base utilities
-│   │   ├── LoginPage.ts                    # Login page interactions
-│   │   ├── MainPage.ts                     # Dashboard / home page
-│   │   ├── ServiceRequestPage.ts           # Single-item service request
-│   │   ├── MultiItemServiceRequestPage.ts  # Multi-item service request
-│   │   ├── AppointmentPage.ts              # Time slot scheduling
-│   │   └── PaymentPage.ts                  # Payment & confirmation
-│   │
-│   ├── exploration/                        # Exploratory / locator discovery specs
-│   │   ├── check-html.spec.ts
-│   │   ├── find-iframe.spec.ts
-│   │   ├── fixed-login.spec.ts
-│   │   ├── locator-discovery.spec.ts
-│   │   ├── simple-discovery.spec.ts
-│   │   └── testrail-integration.spec.ts
-│   │
-│   ├── seed.spec.ts                            # Smoke / environment check
-│   ├── sp-complete-service-request-flow.spec.ts  # Single-item E2E happy path
-│   ├── c171750-multi-item-service-request.spec.ts # Multi-item E2E (POM-based)
-│   ├── c171750-service-request-2items.spec.ts     # Multi-item E2E (raw page)
-│   ├── testCredentials.ts                      # Credential loader utility
-│   └── test-data.env.example                   # Environment variable template
-│
-├── test-plans/                             # AI-generated structured test plans
-│   ├── C171749_MyAccountRequestService.md
-│   ├── C171750_MyAccountRequestService_2Items.md
-│   ├── C171750_DOM_Inspection.md
-│   ├── c171749-my-account-service-request.plan.md
-│   ├── service-request-e2e.plan.md
-│   └── sp-service-request-flow.plan.md
-│
-├── allure-results/                         # Raw Allure output (generated on run)
-├── allure-report/                          # Built Allure HTML report
-├── playwright-report/                      # Built-in Playwright HTML report
-├── test-results/                           # Failure screenshots, videos, traces
-│
-├── .claude/agents/                         # AI agent definitions
-│   ├── playwright-test-planner.md
-│   ├── playwright-test-generator.md
-│   └── playwright-test-healer.md
-│
-├── playwright.config.ts                    # Playwright configuration
-├── package.json                            # Dependencies & npm scripts
-├── test-credentials.json                   # Local credentials (gitignored)
-├── CLAUDE.md                               # AI coding rules for this repo
-└── README.md                               # This file
-```
+### Prerequisites
+- **Node.js** 18+
+- **npm** 9+
+- **Git**
 
----
-
-## Prerequisites
-
-- Node.js 18+
-- npm 9+
-- Chrome / Chromium (via Playwright)
-- Git
-
----
-
-## Project Setup
-
-### 1. Clone the Repository
+### 1. Clone & Install
 
 ```bash
-git clone https://github.com/Rakeshcinch/MyAccount_Playwright_UI_Testsuite.git
-cd MyAccount_Playwright_UI_Testsuite
-```
-
-### 2. Install Dependencies
-
-```bash
+git clone https://github.com/Themarsera/AI_automation_Framework.git
+cd AI_automation_Framework
 npm install
-```
-
-### 3. Install Playwright Browsers
-
-```bash
 npx playwright install chromium
 ```
 
-### 4. Configure Credentials
+### 2. Configure Credentials
 
 Create `test-credentials.json` in the project root:
 
 ```json
 {
-  "user": "your-email@example.com",
-  "pass": "your-password"
+  "testUser": {
+    "email": "your-test-email@example.com",
+    "password": "your-test-password"
+  }
 }
 ```
 
 Or set environment variables:
-
 ```bash
-export TEST_USER=your-email@example.com
-export TEST_PASS=your-password
+export TEST_USER_EMAIL="your-test-email@example.com"
+export TEST_USER_PASSWORD="your-test-password"
+export TEST_ENV="qa"  # qa, preprod, prod
 ```
 
-> `test-credentials.json` is gitignored — never commit real credentials.
+### 3. Run Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run specific test file
+npm test -- tests/login/C169781-Login-with-Correct-Credentials.spec.ts
+
+# Run with headed browser
+npm test -- --headed
+
+# Run in debug mode
+npm test -- --debug
+
+# Generate Allure report
+npm test && npm run allure:report
+```
 
 ---
 
-## Test Execution
+## 📁 Project Structure
 
-### Run All Tests
+```
+AI_automation_Framework/
+├── tests/
+│   ├── pages/                          # Page Object Model classes
+│   │   ├── BasePage.ts                 # Base class with step() helper
+│   │   ├── LoginPage.ts                # Auth0 login flows
+│   │   ├── MainPage.ts                 # Dashboard home page
+│   │   ├── ServiceRequestPage.ts       # Single-item service requests
+│   │   ├── MultiItemServiceRequestPage.ts  # Multi-item flows
+│   │   ├── AppointmentPage.ts          # Appointment scheduling
+│   │   ├── PaymentPage.ts              # Payment processing
+│   │   └── DashboardPage.ts            # Dashboard interactions
+│   │
+│   ├── login/                          # Login test specs
+│   │   ├── C169777-Verify-Click-here-link.spec.ts
+│   │   ├── C169778-Verify-Get-started-CTA-link.spec.ts
+│   │   ├── C169781-Login-with-Correct-Credentials.spec.ts
+│   │   └── C169782-Login-with-Incorrect-Credentials.spec.ts
+│   │
+│   ├── dashboard/                      # Dashboard test specs
+│   │   └── C171774-Verify-links-on-Dashboard-page.spec.ts
+│   │
+│   ├── exploration/                    # Exploratory / discovery tests
+│   │   ├── check-html.spec.ts
+│   │   ├── find-iframe.spec.ts
+│   │   ├── locator-discovery.spec.ts
+│   │   └── testrail-integration.spec.ts
+│   │
+│   ├── testCredentials.ts              # Credential loader utility
+│   └── test-data.env.example           # Environment template
+│
+├── test-plans/                         # AI-generated test plans
+│   ├── C171749_MyAccountRequestService.md
+│   ├── C171750_complete_e2e.md
+│   ├── service-request-e2e.plan.md
+│   └── sp-service-request-flow.plan.md
+│
+├── config/                             # Environment configuration
+│   ├── index.ts
+│   ├── env-schema.ts
+│   └── environments/
+│       ├── qa.ts
+│       ├── preprod.ts
+│       └── prod.ts
+│
+├── fixtures/                           # Playwright fixtures
+│   ├── base.fixture.ts                 # Base page fixture
+│   ├── env.fixture.ts                  # Environment fixture
+│   └── mongo-suite.fixture.ts          # MongoDB test data fixture
+│
+├── hooks/                              # Allure reporting hooks
+│   ├── allure-helpers.ts               # allureLog(), setAllureMetadata()
+│   └── allure-metadata.ts              # Metadata extraction
+│
+├── utils/                              # Shared utilities
+│   ├── playwright-helper.ts            # Common Playwright utilities
+│   ├── locator-helpers.ts              # Locator building helpers
+│   ├── string-helpers.ts               # String manipulation
+│   ├── constants/
+│   │   └── timeouts.ts                 # Timeout constants
+│   ├── data-providers/                 # Test data sources
+│   │   ├── mongo.provider.ts           # MongoDB provider
+│   │   └── provider-factory.ts         # Factory pattern
+│   └── allure/                         # Allure integration
+│       └── failure-category.ts         # Custom failure categories
+│
+├── api/                                # API helpers
+│   ├── clients/
+│   │   └── rest.client.ts              # REST client
+│   └── helpers/
+│       ├── api-flow-helper.ts          # API test flows
+│       └── schema-validation.ts        # Schema validation
+│
+├── AIContext/                          # AI agent instruction files
+│   ├── PlaywrightFrameworkGuidelines.md  # Framework best practices
+│   ├── StandardBusinessRules.md        # MyAccount flow rules
+│   └── StandardTestDataRules.md        # Data & credential rules
+│
+├── .claude/agents/                     # MCP agent definitions
+│   ├── playwright-test-planner.md
+│   ├── playwright-test-generator.md
+│   └── playwright-test-healer.md
+│
+├── playwright.config.ts                # Playwright configuration
+├── tsconfig.json                       # TypeScript config
+├── package.json                        # Dependencies & scripts
+├── CLAUDE.md                           # AI coding rules
+├── PLAYWRIGHT_SETUP.md                 # Setup guide
+├── ALLURE_REPORTING_GUIDE.md           # Allure documentation
+└── README.md                           # This file
+```
 
+---
+
+## 🛠️ Tech Stack
+
+| Area | Technology |
+|------|-----------|
+| **Language** | TypeScript 5.0+ |
+| **Framework** | Playwright v1.40+ |
+| **Test Runner** | @playwright/test |
+| **Package Manager** | npm |
+| **Reports** | Playwright HTML + Allure |
+| **Data Source** | MongoDB + JSON |
+| **Integration** | TestRail (MCP) |
+| **CI/CD** | GitHub Actions |
+| **AI Integration** | Claude MCP agents |
+
+---
+
+## 📖 Key Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** – AI coding rules, workflow, and best practices
+- **[AIContext/PlaywrightFrameworkGuidelines.md](./AIContext/PlaywrightFrameworkGuidelines.md)** – Comprehensive framework guide
+- **[AIContext/StandardBusinessRules.md](./AIContext/StandardBusinessRules.md)** – MyAccount application flows
+- **[AIContext/StandardTestDataRules.md](./AIContext/StandardTestDataRules.md)** – Test data and credentials
+- **[PLAYWRIGHT_SETUP.md](./PLAYWRIGHT_SETUP.md)** – Initial setup instructions
+- **[ALLURE_REPORTING_GUIDE.md](./ALLURE_REPORTING_GUIDE.md)** – Allure report usage
+
+---
+
+## 🎯 Test Organization
+
+### Test Structure
+```
+test('Test Title @tag1 @tag2', async ({ page }) => {
+  // Arrange – setup test data
+  // Act – perform user actions
+  // Assert – verify expected behavior
+});
+```
+
+### Naming Convention
+- Test files: `[C{id}]-{kebab-case}.spec.ts`
+- Test titles: `[C{id}] Description @tag1 @tag2`
+- Tags: `@critical`, `@e2e`, `@smoke`, `@regression`
+
+### Example Test
+```typescript
+import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { setAllureMetadata, allureLog } from '../../hooks/allure-helpers';
+
+test('[C169781] Login with Correct Credentials @critical @e2e', async ({ page }) => {
+  await setAllureMetadata('MyAccount', 'Login');
+
+  const loginPage = new LoginPage(page);
+  
+  await test.step('1: Navigate to login page', async () => {
+    await loginPage.navigateToLogin();
+    await allureLog('Login page loaded');
+  });
+
+  await test.step('2: Enter credentials', async () => {
+    await loginPage.login('test@example.com', 'password');
+  });
+
+  await test.step('3: Verify dashboard loads', async () => {
+    await expect(page).toHaveURL(/dashboard/);
+    await allureLog('Successfully logged in');
+  });
+});
+```
+
+---
+
+## 🤖 AI Workflow (Planner → Generator → Healer)
+
+### 1. Test Planner
+```bash
+npm run planner -- "Add password reset test"
+```
+Generates structured test plan in `test-plans/`
+
+### 2. Test Generator
+```bash
+npm run generator -- "test-plans/password-reset.plan.md"
+```
+Creates test specs from plan in `tests/`
+
+### 3. Test Healer
+```bash
+npm run healer -- tests/auth/C123-password-reset.spec.ts
+```
+Debugs and fixes failing tests automatically
+
+---
+
+## 📋 npm Scripts
+
+```bash
+npm test                    # Run all tests
+npm run test:headed         # Run with headed browser
+npm run test:debug          # Run in debug mode
+npm run allure:generate     # Generate Allure reports
+npm run allure:report       # Open Allure report
+npm run lint                # Run ESLint
+npm run format              # Format code with Prettier
+npm run typecheck           # TypeScript type check
+npm run planner -- "..."    # Run Test Planner agent
+npm run generator -- "..."  # Run Test Generator agent
+npm run healer -- "..."     # Run Test Healer agent
+```
+
+---
+
+## 🔧 Environment Configuration
+
+### QA
+```bash
+export TEST_ENV=qa
+export TEST_BASE_URL=https://qa.myaccount.example.com
+```
+
+### PreProd
+```bash
+export TEST_ENV=preprod
+export TEST_BASE_URL=https://preprod.myaccount.example.com
+```
+
+### Production
+```bash
+export TEST_ENV=prod
+export TEST_BASE_URL=https://myaccount.example.com
+```
+
+---
+
+## 🐛 Debugging
+
+### Run in Debug Mode
+```bash
+npm test -- --debug
+```
+
+### View Traces
+Traces are auto-captured on failure in `test-results/`
+
+### Watch Mode
+```bash
+npm test -- --watch
+```
+
+---
+
+## 📊 Reports
+
+### Playwright Report
 ```bash
 npm test
-```
-
-### Run with Headed Browser (visible UI)
-
-```bash
-npm run test:headed
-```
-
-### Run a Specific Test File
-
-```bash
-npx playwright test tests/sp-complete-service-request-flow.spec.ts
-```
-
-### Run by Tag
-
-```bash
-# Run all critical tests
-npx playwright test --grep "@critical"
-
-# Run all E2E tests
-npx playwright test --grep "@e2e"
-```
-
-### Run Multi-Item Service Request Tests
-
-```bash
-npx playwright test tests/c171750-multi-item-service-request.spec.ts tests/c171750-service-request-2items.spec.ts
-```
-
-### Run in Headless Mode
-
-```bash
-HEADLESS=true npx playwright test
-```
-
-### Debug Mode
-
-```bash
-npx playwright test --debug tests/seed.spec.ts
-```
-
-### UI Mode (interactive)
-
-```bash
-npx playwright test --ui
-```
-
-### List All Tests
-
-```bash
-npx playwright test --list
-```
-
----
-
-## Reporting
-
-### Playwright HTML Report
-
-```bash
 npx playwright show-report
 ```
 
-Report is served at `http://localhost:9323` after a run.
-
 ### Allure Report
-
 ```bash
-# Generate and open Allure report
+npm test
 npm run allure:generate
-npm run allure:open
-
-# Serve live from raw results
-npm run allure:serve
-
-# Run tests + generate + open in one command
-npm run test:allure
-```
-
-> Allure report generation requires Java 8+ (via `allure-commandline`).
-
-### Failure Artifacts
-
-On failure, the following are saved automatically under `test-results/`:
-
-| Artifact | Description |
-|---|---|
-| `test-failed-1.png` | Screenshot at point of failure |
-| `video.webm` | Full session video recording |
-| Trace | Viewable at `trace.playwright.dev` |
-
----
-
-## Configuration
-
-Key settings in `playwright.config.ts`:
-
-| Setting | Value | Notes |
-|---|---|---|
-| `testDir` | `tests/` | All spec files |
-| `timeout` | 30,000 ms | Per-action timeout |
-| `retries` | 1 (local) / 2 (CI) | Never exceed — fix root cause instead |
-| `workers` | 1 | Sequential execution |
-| `headless` | false | Visible browser by default |
-| `slowMo` | 120 ms | Slows actions for visibility |
-| `trace` | `on-first-retry` | Captured on first retry |
-| `video` | `retain-on-failure` | Kept only on failure |
-| `screenshot` | `only-on-failure` | Kept only on failure |
-| `baseURL` | `https://myaccount-ui.qa.cinchhs.com` | QA environment |
-
----
-
-## CI/CD Integration
-
-The framework supports:
-
-- **Headless execution** — `HEADLESS=true`
-- **Environment-based config** — via `.env` or env vars
-- **Report publishing** — Playwright HTML report, screenshots, traces
-
-Example GitHub Actions step:
-
-```yaml
-- run: npm ci
-- run: npx playwright install --with-deps chromium
-- run: TEST_USER=${{ secrets.TEST_USER }} TEST_PASS=${{ secrets.TEST_PASS }} npm test
-- uses: actions/upload-artifact@v4
-  if: always()
-  with:
-    name: playwright-report
-    path: playwright-report/
+npm run allure:report
 ```
 
 ---
 
-## Test Scenarios Covered
+## 🤝 Contributing
 
-| ID | Scenario |
-|---|---|
-| C171749 | Single-item My Account service request (happy path) |
-| C171750 | Multi-item service request — 2 items, 1 category (APPLIANCE PREMIUM plan) |
-| — | Smoke / seed environment check |
-| — | SP complete service request flow (login to confirmation) |
-
-### E2E Flow: Single-Item Service Request
-
-```
-Login → Close Cookie Banner → Dashboard
-     → Request Service → Select Appliance (Refrigerator)
-     → Fill Details (symptom, brand, serial, model)
-     → Continue → Select Appointment Slots (3 slots)
-     → Continue → Review → Continue to Payment
-     → Add Credit Card → Accept Terms → Pay Now
-     → Confirmation Page ✓
-```
-
-### E2E Flow: Multi-Item Service Request (C171750)
-
-```
-Login → Select Plan (APPLIANCE PREMIUM) → Dashboard
-     → Request Service → Select Warranty Repair
-     → Item 1: Refrigerator (symptom, brand, serial, model)
-     → Add Item → Item 2: Clothes Washer (serial, model)
-     → Continue → Review → Continue to Payment
-     → Add Credit Card → Accept Terms → Pay Now
-     → Confirmation (2 service order numbers) ✓
-```
+1. Create a feature branch: `git checkout -b feature/your-feature`
+2. Make changes and test locally
+3. Submit a PR with description of changes
 
 ---
 
-## Page Object Model
+## 📜 License
 
-All test interactions go through Page Object classes. No raw `page.click()` or `page.fill()` calls appear in spec files.
-
-### Class Hierarchy
-
-```
-BasePage
-├── LoginPage                    — navigateToLogin(), login(email, pass)
-├── MainPage                     — dashboard navigation helpers
-├── ServiceRequestPage           — selectRefrigerator(), fillDropdowns(),
-│                                  fillSerialAndModel(), clickContinue()
-├── MultiItemServiceRequestPage  — selectWarrantyRepair(), selectItem(),
-│                                  fillItemDetails(), clickAddItem(), clickContinue()
-├── AppointmentPage              — selectTimeSlots(n), proceedToPayment()
-└── PaymentPage                  — clickAddNewCreditCard(), fillCardDetails(),
-                                   submitPayment(), verifyConfirmation(),
-                                   verifyMultiItemConfirmation()
-```
-
-### Locator Priority
-
-1. `getByRole()` — accessibility-based, most resilient
-2. `getByLabel()` — for form inputs
-3. `getByTestId()` — when `data-testid` attributes exist
-4. `getByText()` — for stable visible text
-5. `locator('css')` — last resort only
+MIT
 
 ---
 
-## AI-Assisted Test Workflow
+## 📧 Support
 
-This project uses three Claude Code AI agents. **Always follow this order:**
-
-### 1. Test Planner (`playwright-test-planner`)
-
-Navigates the live app, explores flows, and saves a structured plan in `test-plans/`.
-
-- Run **before** writing any tests
-- Plans cover happy path, edge cases, and error states
-
-### 2. Test Generator (`playwright-test-generator`)
-
-Creates spec files and Page Objects from a plan file.
-
-- Input: plan file from `test-plans/`
-- Output: spec in `tests/`, Page Object in `tests/pages/`
-
-### 3. Test Healer (`playwright-test-healer`)
-
-Debugs and fixes failing tests one root cause at a time.
-
-- Runs the failing test → diagnoses → applies fix → reruns to verify
-- If failure persists after one fix attempt, marks `test.fixme()` — never deletes tests
-
-> Agent definitions live in `.claude/agents/`.
+For questions or issues:
+- Open a GitHub issue
+- Check existing documentation in `AIContext/`
+- Review test examples in `tests/`
 
 ---
 
-## TestRail Integration
-
-Test cases are mapped to TestRail using the `C<id>` prefix in spec file names and the `@TestRail: C<id>` annotation in test comments.
-
-| TestRail ID | Spec File | Description |
-|---|---|---|
-| C171749 | `c171749-*` | Single-item service request |
-| C171750 | `c171750-*` | Multi-item service request (2 items, 1 category) |
-
-Results can be pushed directly to TestRail via the MCP TestRail plugin (`TestrailMcp.json`).
-
----
-
-## Contribution Guidelines
-
-- Follow existing coding standards and naming conventions
-- Always run the **Planner → Generator → Healer** agent workflow for new tests
-- Ensure all new tests are modular and go through Page Objects
-- Add Allure annotations (`@Feature`, `@Story`, `@Severity`) to every test
-- Never commit `test.only()` or increase retries beyond the configured values
-- Never hardcode credentials — use `test-credentials.json` or env vars
-- Update test plans in `test-plans/` for any new flows
-
----
-
-## Contributors
-
-- **Rakesh Lenka** — rlenka@cinchhs.com
-
----
-
-## License
-
-This project is intended for internal use only.  
-All rights reserved © Cinch Home Services.
+**Built with ❤️ for reliable, maintainable automation testing**
