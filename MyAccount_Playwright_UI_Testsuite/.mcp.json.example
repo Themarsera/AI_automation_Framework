@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "playwright-test": {
+      "command": "npx",
+      "args": [
+        "playwright",
+        "run-test-mcp-server"
+      ]
+    },
+    "testrail": {
+      "command": "npx",
+      "args": ["@bun913/mcp-testrail@latest"],
+      "env": {
+        "TESTRAIL_URL": "https://your-org.testrail.com/",
+        "TESTRAIL_USERNAME": "your-email@example.com",
+        "TESTRAIL_API_KEY": "your-testrail-api-key-here"
+      }
+    }
+  }
+}

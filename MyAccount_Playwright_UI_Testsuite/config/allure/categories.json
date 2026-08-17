@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Test data issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(No test data|test data not found|testcaseData|Mongo test data requires|empty suite|No record found|dataProvider|suiteId|tcName).*",
+    "traceRegex": ".*(dataProvider|getSuiteData|MongoProvider|testcaseData|createDataProvider).*"
+  },
+  {
+    "name": "Database issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(MongoServerError|MongoNetworkError|MongoTimeoutError|MongoParseError|ECONNREFUSED.*27017|Server selection timed out|authentication failed).*",
+    "traceRegex": ".*(mongodb|MongoClient|mongo\\.provider).*"
+  },
+  {
+    "name": "API issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(apiRequestContext|APIRequestContext|Request failed with status code [45]\\d\\d|fetch failed|REST API|GraphQL|response\\.json\\(\\)|status\\s*:\\s*[45]\\d\\d).*",
+    "traceRegex": ".*(api/|ApiFlowHelper|rest\\.client|request\\.post|request\\.get).*"
+  },
+  {
+    "name": "Locator issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(TimeoutError.*locator|waiting for locator|locator\\.click|locator\\.fill|locator\\.waitFor|strict mode violation|element\\(s\\) not found|getByRole|getByTestId|getByPlaceholder|data-autoid|toBeVisible\\(\\)|toBeEnabled\\(\\)|toHaveText\\(\\)|toContainText\\(\\)).*",
+    "traceRegex": ".*(locator\\(|getByRole|getByTestId|getByPlaceholder|pages/|\\.page\\.locator).*"
+  },
+  {
+    "name": "UI issues",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(page\\.goto|waitForURL|Navigation timeout|504 Gateway|502 Bad Gateway|503 Service|net::ERR_|Loading page|Page crashed|Target closed|dialog|modal).*",
+    "traceRegex": ".*(waitForURL|page\\.goto|navigation|tests/pages/).*"
+  },
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed", "broken"]
+  }
+]
